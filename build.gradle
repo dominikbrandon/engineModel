@@ -1,0 +1,28 @@
+group 'dominikbrandon'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'org.dominikbrandon.engineTester.MainGameLoop'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.lwjgl.lwjgl', name: 'lwjgl', version: '2.9.3'
+    compile group: 'org.slick2d', name: 'slick2d-core', version: '1.0.2'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+task copyLwjglNatives(type: Copy) {
+    from 'lib/native/windows'
+    into "${buildDir}/native"
+}
+
+build.finalizedBy(copyLwjglNatives)
+
+applicationDefaultJvmArgs = ["-Djava.library.path=${buildDir}/native/"]
