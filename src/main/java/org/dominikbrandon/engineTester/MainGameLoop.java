@@ -1,10 +1,12 @@
 package org.dominikbrandon.engineTester;
 
+import org.dominikbrandon.models.TexturedModel;
 import org.dominikbrandon.renderEngine.DisplayManager;
 import org.dominikbrandon.renderEngine.Loader;
-import org.dominikbrandon.renderEngine.RawModel;
+import org.dominikbrandon.models.RawModel;
 import org.dominikbrandon.renderEngine.Renderer;
 import org.dominikbrandon.shaders.StaticShader;
+import org.dominikbrandon.textures.ModelTexture;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 
@@ -28,12 +30,21 @@ public class MainGameLoop {
                 0,1,3,
                 3,1,2
         };
-        RawModel model = loader.loadToVAO(vertices, indices);
+        float[] textureCoords = {
+                0,0,
+                0,1,
+                1,1,
+                1,0
+        };
+
+        RawModel model = loader.loadToVAO(vertices, textureCoords, indices);
+        ModelTexture texture = new ModelTexture(loader.loadTexture("house"));
+        TexturedModel texturedModel = new TexturedModel(model, texture);
 
         while(!Display.isCloseRequested()) {
             renderer.prepare();
             shader.start();
-            renderer.render(model);
+            renderer.render(texturedModel);
             shader.stop();
             DisplayManager.updateDisplay();
         }

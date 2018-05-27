@@ -1,4 +1,4 @@
-package org.dominikbrandon.renderEngine;
+package org.dominikbrandon.models;
 
 public class RawModel {
     private int vaoID;
