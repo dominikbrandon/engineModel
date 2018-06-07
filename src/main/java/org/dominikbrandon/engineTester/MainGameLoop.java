@@ -28,11 +28,13 @@ public class MainGameLoop {
         RawModel crankshaftRawModel = OBJLoader.loadObjModel("crankshaft1", loader);
         RawModel pistonRodRawModel = OBJLoader.loadObjModel("pistonrod", loader);
         ModelTexture steelTexture = new ModelTexture(loader.loadTexture("stal"));
+        steelTexture.setShineDamper(10);
+        steelTexture.setReflectivity(1);
         TexturedModel crankshaftTexturedModel = new TexturedModel(crankshaftRawModel, steelTexture);
         TexturedModel pistonRodTexturedModel = new TexturedModel(pistonRodRawModel, steelTexture);
+
         Entity crankshaftEntity = new Entity(crankshaftTexturedModel, new Vector3f(0,0,0),0,0,0,0.01f);
         Entity pistonRodEntity = new Entity(pistonRodTexturedModel, new Vector3f(0,0,0),0,0,0,0.1f);
-
         Camera camera = new Camera();
         Light light = new Light(new Vector3f(0,0,10), new Vector3f(1,1,1));
 

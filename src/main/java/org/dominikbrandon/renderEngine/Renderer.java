@@ -4,6 +4,7 @@ import org.dominikbrandon.entites.Entity;
 import org.dominikbrandon.models.RawModel;
 import org.dominikbrandon.models.TexturedModel;
 import org.dominikbrandon.shaders.StaticShader;
+import org.dominikbrandon.textures.ModelTexture;
 import org.dominikbrandon.toolbox.Maths;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.vector.Matrix4f;
@@ -39,6 +40,8 @@ public class Renderer {
                 entity.getRotZ(), entity.getScale()
         );
         shader.loadTransformationMatrix(transformationMatrix);
+        ModelTexture texture = model.getTexture();
+        shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
         GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
