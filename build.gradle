@@ -24,6 +24,6 @@ task copyLwjglNatives(type: Copy) {
     into "${buildDir}/native"
 }
 
-build.finalizedBy(copyLwjglNatives)
+copyLwjglNatives.mustRunAfter build
 
 applicationDefaultJvmArgs = ["-Djava.library.path=${buildDir}/native/"]
