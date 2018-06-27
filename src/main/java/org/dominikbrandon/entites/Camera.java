@@ -12,7 +12,7 @@ public class Camera {
     private float pitch = INIT_PITCH;
     private float yaw = 0;
     private float roll;
-    private float distanceFromFocusPoint = 30;
+    private float distanceFromFocusPoint = 0;
     private float angleAroundFocusPoint = 0;
 
     public Camera(FocusPoint focusPoint) {
