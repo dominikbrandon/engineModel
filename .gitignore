@@ -1,4 +1,12 @@
-res
+res/**/*
+!res/steel.png
+!res/crankshaft1.obj
+!res/pistonrod.obj
+!res/pistonHead4.obj
+!res/valve1.obj
+!res/camshaft1.obj
+!res/ball.obj
+
 
 # Created by https://www.gitignore.io/api/java,gradle,intellij+all
 

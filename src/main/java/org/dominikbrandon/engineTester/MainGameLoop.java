@@ -29,22 +29,23 @@ public class MainGameLoop {
         RawModel pistonHeadRawModel = OBJLoader.loadObjModel("pistonHead4", loader);
         RawModel valveRawModel = OBJLoader.loadObjModel("valve1", loader);
         RawModel camshaftRawModel = OBJLoader.loadObjModel("camshaft1", loader);
+        RawModel ballRawModel = OBJLoader.loadObjModel("ball", loader);
         TexturedModel crankshaftTexturedModel = new TexturedModel(crankshaftRawModel, steelTexture);
         TexturedModel pistonRodTexturedModel = new TexturedModel(pistonRodRawModel, steelTexture);
         TexturedModel pistonHeadTexturedModel = new TexturedModel(pistonHeadRawModel, steelTexture);
         TexturedModel valveTexturedModel = new TexturedModel(valveRawModel, steelTexture);
         TexturedModel camshaftTexturedModel = new TexturedModel(camshaftRawModel, steelTexture);
+        TexturedModel ballTexturedModel = new TexturedModel(ballRawModel, steelTexture);
 
-//        Entity crankshaftEntity = new Entity(crankshaftTexturedModel, new Vector3f(0,-3,-10),90,0,90,0.04f); // c2
-        Entity crankshaftEntity = new Entity(crankshaftTexturedModel, new Vector3f(0,-3,-10),90,0,0,0.1f); // c1
-        final float crankshaftRotationSpeed = 0.544f;
+        Entity crankshaftEntity = new Entity(crankshaftTexturedModel, new Vector3f(0,-3,-10),90,0,0,0.1f);
+        final float crankshaftRotationSpeed = 0.5432f;
 
         final float pistonsNumber = 6;
         final float pistonPositionFirstX = -0.55f;
         final float pistonIntervalX = 4.10f;
         final float[] pistonStartingHeights = {3.2f,4.5f,2f,2f,3.2f,4.5f};
         final float[] pistonStartingRotations = {10f, -3f, -4f, 0f, -10f, 1f};
-        final int[] pistonStartingStrokes = {2, 1, 1, 2, 1, 2};
+        final int[] pistonStartingStrokes = {2, 1, 3, 4, 1, 2};
 
         List<Piston> pistonEntities = new ArrayList<>();
         for (int i = 0; i < pistonsNumber; i++) {
@@ -59,15 +60,17 @@ public class MainGameLoop {
                     pistonStartingRotations[i],
                     pistonStartingStrokes[i]
             ));
+            pistonEntities.get(i).addValves(valveTexturedModel);
         }
 
-//        Entity pistonHeadEntity = new Entity(pistonHeadTexturedModel, new Vector3f(-3.25f,1,-10),0,90,0,0.05f);   // ph3
-//        Entity pistonHeadEntity = new Entity(pistonHeadTexturedModel, new Vector3f(pistonPositionFirstX,pistonHighestPosition+1f,-10.5f),0,0,-90,0.2f);
-        Entity valveEntity = new Entity(valveTexturedModel, new Vector3f(0,0,-10),0,0,0,0.04f);
-        Entity camshaftEntity = new Entity(camshaftTexturedModel, new Vector3f(0,0,-10),0,0,0,0.053f);
+        final float camshaftRotationSpeed = 0.272f;
+        Entity camshaftLeftOut = new Entity(camshaftTexturedModel, new Vector3f(-2.5f,10.4f,-13.5f),20,0,0,0.053f);
+        Entity camshaftLeftIn = new Entity(camshaftTexturedModel, new Vector3f(-2.5f,10.4f,-6.5f),20,0,0,0.053f);
+        Entity camshaftRightOut = new Entity(camshaftTexturedModel, new Vector3f(21.8f,10.4f,-13.5f),200,180,0,0.053f);
+        Entity camshaftRightIn = new Entity(camshaftTexturedModel, new Vector3f(21.8f,10.4f,-6.5f),200,180,0,0.053f);
 
-        FocusPoint focusPoint = new FocusPoint(pistonHeadTexturedModel, new Vector3f(10,10,20),
-                90,0,0,0.05f);
+        FocusPoint focusPoint = new FocusPoint(ballTexturedModel, new Vector3f(10,10,20),
+                90,0,0,0.005f);
         Camera camera = new Camera(focusPoint);
         Light light = new Light(new Vector3f(20,30,100), new Vector3f(1,1,1));
 
@@ -82,12 +85,20 @@ public class MainGameLoop {
                 piston.move();
                 renderer.processEntity(piston.getRod());
                 renderer.processEntity(piston.getHead());
+                renderer.processEntity(piston.getValveIn());
+                renderer.processEntity(piston.getValveOut());
             }
 
-//            renderer.processEntity(valveEntity);
-//            renderer.processEntity(camshaftEntity);
-            renderer.render(light, camera);
+            camshaftLeftOut.increaseRotation(camshaftRotationSpeed,0,0);
+            camshaftLeftIn.increaseRotation(camshaftRotationSpeed,0,0);
+            camshaftRightOut.increaseRotation(camshaftRotationSpeed,0,0);
+            camshaftRightIn.increaseRotation(camshaftRotationSpeed,0,0);
+            renderer.processEntity(camshaftLeftOut);
+            renderer.processEntity(camshaftLeftIn);
+            renderer.processEntity(camshaftRightOut);
+            renderer.processEntity(camshaftRightIn);
 
+            renderer.render(light, camera);
             DisplayManager.updateDisplay();
         }
 
